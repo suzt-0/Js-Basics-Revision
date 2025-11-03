@@ -1,2 +1,43 @@
 # Js-Basics-Revision
-A repo to revise my js knowledge and its syntax with a simple project as well
+## Topics
+
+- JavaScript syntax and statements
+- Variables: var, let, const
+- Data types and type conversion
+- Operators and expressions
+- Control flow: if, switch, loops
+- Functions: declarations, expressions, arrow functions
+- Scope, hoisting, and closures
+- This, call, apply, bind
+- Objects, properties, and methods
+- Prototypes and prototype chain
+- Classes and inheritance
+- Arrays and array methods
+- Iteration protocols, iterators, generators
+- ES6+ features (destructuring, spread/rest, template literals, etc.)
+- Modules (ESM and CommonJS)
+- Asynchronous JavaScript: callbacks, Promises, async/await
+- Event loop and concurrency model
+- Error handling and debugging
+- DOM manipulation and traversal
+- Event handling and delegation
+- Fetch API, XHR, and working with APIs
+- Web APIs (localStorage, sessionStorage, timers, WebSockets basics)
+- Forms and validation
+- Node.js basics (core modules, filesystem, HTTP)
+- Package management (npm/yarn) and modules
+- Build tools and bundlers (Webpack, Rollup, esbuild) and transpilation (Babel)
+- Testing fundamentals (unit/integration, Jest/Mocha)
+- Linting and formatting (ESLint, Prettier)
+- Performance optimization and best practices
+- Security basics (CORS, XSS, input validation)
+- TypeScript introduction and typing fundamentals
+- Code organization, patterns, and maintainability
+- Version control and workflow (Git basics)
+- Accessibility considerations for web apps
+- Progressive enhancement and responsive design basics
+- Deployment basics and environment configuration
+- Monitoring, logging, and error reporting
+- Common design patterns and anti-patterns in JS
+- Reading and understanding library/framework documentation
+- Continuing learning: RFCs, TC39 proposals, and ECMAScript updates
