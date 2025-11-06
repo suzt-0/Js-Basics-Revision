@@ -1,4 +1,4 @@
-# Js-Basics-Revision
+# Js-Revision
 ## Topics
 
 - JavaScript syntax and statements
