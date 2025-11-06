@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>DOM Manipulation: Basic → Advanced</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        :root {
+            --gap: 12px;
+            --bg: #0f172a;
+            --panel: #111827;
+            --muted: #94a3b8;
+            --fg: #e5e7eb;
+            --accent: #22c55e;
+            --accent-2: #60a5fa;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            font: 14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+            color: var(--fg);
+            background: linear-gradient(180deg, #0b1220, #0a0f1d);
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: rgba(10, 15, 29, .8);
+            backdrop-filter: blur(6px);
+            border-bottom: 1px solid #1f2937;
+        }
+
+        header .wrap,
+        main .wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 6px 10px;
+            border: 1px solid #1f2937;
+            border-radius: 8px;
+            background: #0b1220;
+        }
+
+        nav a:hover {
+            color: var(--fg);
+            border-color: #334155;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            font-size: 22px;
+        }
+
+        .grid {
+            display: grid;
+            gap: var(--gap);
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        }
+
+        section {
+            background: #0b1220;
+            border: 1px solid #172131;
+            border-radius: 12px;
+            padding: 14px;
+            min-width: 0;
+        }
+
+        section h2 {
+            margin: 0 0 8px;
+            font-size: 16px;
+            color: #cbd5e1;
+        }
+
+        section p,
+        section li,
+        section small,
+        label {
+            color: var(--muted);
+        }
+
+        button,
+        .btn {
+            appearance: none;
+            border: 1px solid #1f2937;
+            background: #0d1424;
+            color: #e5e7eb;
+            padding: 6px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            border-color: #334155;
+        }
+
+        .row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .list {
+            padding-left: 18px;
+        }
+
+        .pill {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: #0f172a;
+            border: 1px solid #1f2937;
+        }
+
+        .hl {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 6px;
+        }
+
+        .box {
+            width: 80px;
+            height: 40px;
+            background: #111827;
+            border: 1px solid #1f2937;
+            border-radius: 8px;
+            display: inline-grid;
+            place-items: center;
+        }
+
+        .accent {
+            color: var(--accent);
+        }
+
+        .accent-2 {
+            color: var(--accent-2);
+        }
+
+        .log {
+            background: #05070f;
+            border: 1px solid #1f2937;
+            border-radius: 8px;
+            padding: 8px;
+            white-space: pre-wrap;
+            max-height: 180px;
+            overflow: auto;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 12px;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(6px);
+            transition: opacity .35s ease, transform .35s ease;
+            background: #0b1220;
+            border: 1px dashed #1f2937;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+            border-style: solid;
+        }
+
+        .track {
+            position: relative;
+            height: 60px;
+            background: #0b1220;
+            border: 1px solid #172131;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .dot {
+            position: absolute;
+            left: 8px;
+            top: 12px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            box-shadow: 0 4px 16px rgba(34, 197, 94, .4);
+        }
+
+        .code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 12px;
+        }
+        .kbd-focus {
+            outline: 2px solid var(--accent-2);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="wrap">
+            <h1>DOM Manipulation: Basic → Advanced</h1>
+            <nav aria-label="Examples">
+                <a href="#basic">Basic</a>
+                <a href="#create">Create/Insert/Remove</a>
+                <a href="#events">Events & Delegation</a>
+                <a href="#form">Forms</a>
+                <a href="#traverse">Traversal</a>
+                <a href="#template">Template</a>
+                <a href="#styles">Styles</a>
+                <a href="#shadow">Shadow DOM</a>
+                <a href="#custom">Custom Events</a>
+                <a href="#mutation">MutationObserver</a>
+                <a href="#intersection">IntersectionObserver</a>
+                <a href="#raf">requestAnimationFrame</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="wrap">
+        <div class="grid">
+            <!-- 1) BASIC READ/WRITE/ATTRIBUTES/CLASSES -->
+            <section id="basic">
+                <h2>1) Basics: select, read/write, attributes, classes</h2>
+                <p id="basic-text" class="pill" title="initial-title">Hello, Hover me</p>
+                <div class="row">
+                    <button id="set-text">textContent</button>
+                    <button id="set-html">innerHTML</button>
+                    <button id="set-attr">setAttribute / dataset</button>
+                    <button id="toggle-class">classList.toggle</button>
+                </div>
+                <small class="code">
+                    Uses querySelector/getElementById → .textContent / .innerHTML → .setAttribute / .dataset →
+                    .classList
+                </small>
+            </section>
+
+            <!-- 2) CREATE/INSERT/REMOVE/CLONE/FRAGMENT -->
+            <section id="create">
+                <h2>2) Create, insert, remove, replace, clone</h2>
+                <ol id="todo" class="list"></ol>
+                <div class="row">
+                    <button id="add-one">append 1 item</button>
+                    <button id="add-many">append 10 (DocumentFragment)</button>
+                    <button id="insert-first">prepend</button>
+                    <button id="replace-first">replace first</button>
+                    <button id="remove-last">remove last</button>
+                    <button id="clone-last">clone last</button>
+                </div>
+                <small class="code">
+                    document.createElement → .append/.prepend/.before/.replaceWith/.remove → DocumentFragment for batch
+                    adds
+                </small>
+            </section>
+
+            <!-- 3) EVENTS & DELEGATION -->
+            <section id="events">
+                <h2>3) Events: addEventListener, options, delegation</h2>
+                <!-- for all generic buttons they will be created and added to the btn-grid -->
+                <div id="btn-grid" class="row"></div>
+                <!-- for special buttons that only work once they will be added to the btn-grid-once -->
+                <div id="btn-grid-once" class="row"></div>
+
+                <div class="row">
+                    <button id="add-dynamic-btn">add dynamic button</button>
+                    <button id="once-btn">listen once</button>
+                </div>
+                <div id="events-log" class="log" aria-live="polite"></div>
+                <small class="code">
+                    Single listener on parent handles clicks from current and future children (event.target + .matches).
+                </small>
+            </section>
+
+            <!-- 4) FORMS -->
+            <section id="form">
+                <h2>4) Forms: value, preventDefault, validity</h2>
+                <form id="demo-form" class="row">
+                    <label>
+                        Name:
+                        <input id="name-input" name="name" required minlength="2" placeholder="Ada Lovelace" />
+                    </label>
+                    <label>
+                        Age:
+                        <input id="age-input" name="age" type="number" min="1" max="120" />
+                    </label>
+                    <button type="submit">Submit</button>
+                    <button type="button" id="prefill">Prefill</button>
+                </form>
+                <div id="form-out" class="hl"></div>
+                <small class="code">
+                    Form submission intercepted with preventDefault; reads input.value and shows Constraint Validation
+                    API messages.
+                </small>
+            </section>
+
+            <!-- 5) TRAVERSAL -->
+            <section id="traverse">
+                <h2>5) Traversal: parent/children/siblings/closest</h2>
+                <ul id="tree" class="list">
+                    <li class="node">Fruits
+                        <ul>
+                            <li class="node">Apple</li>
+                            <li class="node">Orange</li>
+                        </ul>
+                    </li>
+                    <li class="node">Vegetables
+                        <ul>
+                            <!-- <li class="node">Carrot</li>
+                            <img height="200" src="https://plus.unsplash.com/premium_photo-1724849305142-498abc1f7b89?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=687" alt="Carrot">
+                            <img height="200" src="https://plus.unsplash.com/premium_photo-1724849305142-498abc1f7b89?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=687" alt="Carrot">
+                            <img height="200" src="https://plus.unsplash.com/premium_photo-1724849305142-498abc1f7b89?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=687" alt="Carrot">
+                            <img height="200" src="https://plus.unsplash.com/premium_photo-1724849305142-498abc1f7b89?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=687" alt="Carrot">
+                            <img height="200" src="https://plus.unsplash.com/premium_photo-1724849305142-498abc1f7b89?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=687" alt="Carrot">
+                            <img height="200" src="https://plus.unsplash.com/premium_photo-1724849305142-498abc1f7b89?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=687" alt="Carrot">
+                            <img height="200" src="https://plus.unsplash.com/premium_photo-1724849305142-498abc1f7b89?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=687" alt="Carrot">
+                            <img height="200" src="https://plus.unsplash.com/premium_photo-1724849305142-498abc1f7b89?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=687" alt="Carrot">
+                            <img height="200" src="https://plus.unsplash.com/premium_photo-1724849305142-498abc1f7b89?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=687" alt="Carrot">
+                            <img height="200" src="https://plus.unsplash.com/premium_photo-1724849305142-498abc1f7b89?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=687" alt="Carrot"> -->
+                            <li class="node">Broccoli</li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="row">
+                    <button id="highlight-closest">Highlight clicked node (.closest)</button>
+                    <button id="expand-collapse">Toggle collapse</button>
+                </div>
+            </section>
+
+            <!-- 6) TEMPLATE -->
+            <section id="template">
+                <h2>6) Template + DocumentFragment</h2>
+                <template id="card-tpl">
+                    <article class="hl" style="display:block">
+                        <h4 class="title"></h4>
+                        <p class="desc"></p>
+                    </article>
+                </template>
+                <div id="cards" class="grid"></div>
+                <div class="row">
+                    <button id="add-cards">Render cards</button>
+                    <button id="clear-cards">Clear</button>
+                </div>
+            </section>
+
+            <!-- 7) STYLES -->
+            <section id="styles">
+                <h2>7) Styles: inline, classList, computed</h2>
+                <div id="color-box" class="box">box</div>
+                <div class="row">
+                    <button id="inline-style">style.setProperty</button>
+                    <button id="toggle-style-class">toggle class</button>
+                    <button id="read-computed">getComputedStyle</button>
+                </div>
+                <div id="style-out" class="hl"></div>
+                <style>
+                    .hot {
+                        background: linear-gradient(135deg, #f59e0b, #ef4444) !important;
+                        border-color: #b91c1c !important;
+                    }
+                </style>
+            </section>
+
+            <!-- 8) SHADOW DOM -->
+            <section id="shadow">
+                <h2>8) Shadow DOM: encapsulated DOM and styles</h2>
+                <div id="shadow-host" class="hl"></div>
+                <div class="row">
+                    <button id="attach-shadow">Attach shadow</button>
+                    <button id="update-shadow">Update shadow content</button>
+                </div>
+                <small class="code">
+                    host.attachShadow({mode:'open'}) → shadowRoot.innerHTML; styles inside do not leak out.
+                </small>
+            </section>
+
+            <!-- 9) CUSTOM EVENTS -->
+            <section id="custom">
+                <h2>9) CustomEvent: cross-component signaling</h2>
+                <div class="row">
+                    <span>Count: <strong id="count-val" class="accent">0</strong></span>
+                    <button id="inc">Increment</button>
+                    <button id="dec">Decrement</button>
+                </div>
+                <div id="custom-log" class="log"></div>
+                <small class="code">
+                    dispatchEvent(new CustomEvent('counter:changed', { detail, bubbles: true }))
+                </small>
+            </section>
+
+            <!-- 10) MUTATION OBSERVER -->
+            <section id="mutation">
+                <h2>10) MutationObserver: watch DOM changes</h2>
+                <div class="row">
+                    <button id="mut-add">Add item</button>
+                    <button id="mut-attr">Toggle attribute</button>
+                    <button id="mut-clear">Clear list</button>
+                </div>
+                <ul id="mut-list" class="list"></ul>
+                <div id="mut-log" class="log"></div>
+            </section>
+
+            <!-- 11) INTERSECTION OBSERVER -->
+            <section id="intersection">
+                <h2>11) IntersectionObserver: lazy reveal</h2>
+                <p class="muted">Scroll to reveal boxes as they enter the viewport.</p>
+                <div id="reveal-container" class="grid">
+                    <!-- Boxes will be created -->
+                </div>
+            </section>
+
+            <!-- 12) requestAnimationFrame -->
+            <section id="raf">
+                <h2>12) requestAnimationFrame: smooth animation</h2>
+                <div class="row">
+                    <button id="start-anim">Start</button>
+                    <button id="stop-anim">Stop</button>
+                </div>
+                <div class="track">
+                    <div id="dot" class="dot" role="img" aria-label="Animated dot"></div>
+                </div>
+            </section>
+
+            <!-- 13) FOCUS STYLES -->
+            <section id="focus-styles">
+                <h2>13) Focus Styles: keyboard vs mouse</h2>
+                <p>Try focusing the input below using keyboard (Tab) vs mouse (click).</p>
+                <input type="text" placeholder="Focus me" />
+                <small class="code">
+                    Adds 'kbd-focus' class on focusin if last interaction was keyboard; removes on focusout.
+                </small>
+            </section>
+        </div>
+    </main>
+
+    <script src="Chapter_5.js"></script>
+</body>
+
+</html>
