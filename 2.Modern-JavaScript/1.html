@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>JavaScript Basics Revision</title>
+    <title>Modern ES6 features</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
         :root {
@@ -47,93 +47,81 @@
             color: var(--fg);
         }
 
-        h2 {
-            margin: 24px 0 16px;
-            font-size: 24px;
-            color: var(--accent-2);
-        }
-
-        .grid {
-            display: grid;
-            gap: var(--gap);
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        }
-
         .card {
             background: #0b1220;
             border: 1px solid #172131;
             border-radius: 12px;
             padding: 20px;
-            transition: transform 0.2s, border-color 0.2s;
+            margin: 20px 0;
         }
 
-        .card:hover {
-            transform: translateY(-2px);
-            border-color: var(--accent-2);
+        .instruction {
+            background: var(--panel);
+            border-left: 4px solid var(--accent);
+            padding: 16px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
         }
 
-        .card h3 {
-            margin: 0 0 12px;
-            color: var(--accent);
+        .quote {
             font-size: 18px;
+            color: var(--accent-2);
+            font-style: italic;
+            line-height: 1.6;
+            position: relative;
+            padding: 20px;
+            background: rgba(96, 165, 250, 0.1);
+            border-radius: 12px;
         }
 
-        .card p {
-            margin: 0;
-            color: var(--muted);
+        .quote::before {
+            content: '"';
+            font-size: 48px;
+            color: var(--accent);
+            position: absolute;
+            left: -10px;
+            top: -10px;
+            opacity: 0.5;
         }
 
-        a {
+        .home-link {
             color: var(--accent-2);
             text-decoration: none;
             padding: 8px 16px;
             border-radius: 8px;
             transition: background-color 0.2s;
             display: inline-block;
+            margin-top: 20px;
         }
 
-        a:hover {
+        .home-link:hover {
             background-color: rgba(96, 165, 250, 0.1);
-        }
-
-        .small {
-            font-size: 12px;
-            color: var(--muted);
-            margin-top: 8px;
         }
     </style>
 </head>
 <body>
     <header>
         <div class="wrap">
-            <h1>JavaScript Basics Revision</h1>
+            <h1>Modern ES6+ features</h1>
         </div>
     </header>
 
     <main class="wrap">
-        <h2>Course Modules</h2>
-        <div class="grid">
-            <div class="card">
-                <h3>DOM Manipulation</h3>
-                <p>Learn how to manipulate the Document Object Model with JavaScript</p>
-                <div class="small">Chapter 5</div>
-                <a href="/1.Foundations/Chapter_5.html">Go to Module →</a>
-            </div>
+        <div class="instruction">
+            <p>Open the browser's console (F12 or right-click → Inspect → Console)</p>
+        </div>
 
-            <div class="card">
-                <h3>Debugging & Troubleshooting</h3>
-                <p>Master the tools and techniques for debugging JavaScript applications</p>
-                <div class="small">Chapter 6</div>
-                <a href="/1.Foundations/Chapter_6.html">Go to Module →</a>
-            </div>
-
-            <div class="card">
-                <h3>ES6+ Features</h3>
-                <p>Modern JS Features for development</p>
-                <div class="small">Chap-1</div>
-                <a href="2.Modern-JavaScript/1.html">Go to Module →</a>
+        <div class="card">
+            <div class="quote">
+                Finding an error in JavaScript is like stubbing your toe in the dark.<br>
+                You can feel the pain but you can't see the object that caused it.
             </div>
         </div>
+
+        <a href="/index.html" class="home-link">← Back to Home</a>
     </main>
+
+    <!-- Link to the JavaScript file -->
+    <script src="./1.ES6_features.js"></script>
 </body>
 </html>
